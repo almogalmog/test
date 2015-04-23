@@ -1,8 +1,8 @@
 package Acceptance_tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
 import java.util.Vector;
 
 import org.junit.Before;
@@ -11,10 +11,7 @@ import org.junit.Test;
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Post;
-import Domain.Forum_component.I_Sub_Forum;
-import Domain.User_component.I_Member;
+import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 import Service.Bridge;
@@ -23,11 +20,11 @@ import Service.Driver;
 public class TC9_post_thread {
 	private Forum_System fs;
 	private Super_Admin sa;
-	private I_Forum f;
-	private I_Sub_Forum sub;
+	private Forum f;
+	private Sub_Forum sub;
 	private Vector<Member> moderators;
 	private Bridge b = Driver.getBridge();
-	private I_Member m;
+	private Member m;
 	@Before
 	public void setUp() throws Exception {
 		this.sa = new Super_Admin("a", "a", "b", 20);
@@ -68,9 +65,9 @@ public class TC9_post_thread {
 	
 	@Test
 	public void test_num_of_messages(){
-		int num = m.get_mif(f).getNumOfPosts();
+		int num = m.getMembersInForum(f).getNumOfPosts();
 		b.postThread(sub, "a", "b", m);
-		assertTrue(m.get_mif(f).getNumOfPosts() == num+1);
+		assertTrue(m.getMembersInForum(f).getNumOfPosts() == num+1);
 	}
 	
 }

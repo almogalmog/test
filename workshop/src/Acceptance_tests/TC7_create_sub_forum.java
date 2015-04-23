@@ -10,23 +10,23 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Forum_Ruels;
-import Domain.Forum_component.I_Forum_System;
-import Domain.Forum_component.I_Sub_Forum;
-import Domain.User_component.I_Member;
-import Domain.User_component.I_User;
+import Domain.Forum_component.Forum;
+import Domain.Forum_component.Forum_Ruels;
+import Domain.Forum_component.Forum_System;
+import Domain.Forum_component.Sub_Forum;
+import Domain.User_component.Member;
+import Domain.User_component.User;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 import Service.Bridge;
 import Service.Driver;
 
 public class TC7_create_sub_forum {
-	private I_Forum_System fs;
+	private Forum_System fs;
 	private Super_Admin sa;
-	private I_Forum f;
-	private I_Forum_Ruels fr;
-	private I_Member admin;
+	private Forum f;
+	private Forum_Ruels fr;
+	private Member admin;
 	private Vector<Member> moderators ;
 	private Vector<Member> admins;
 	private Bridge b = Driver.getBridge();
@@ -54,25 +54,25 @@ public class TC7_create_sub_forum {
 
 	@Test /*TR 32*/
 	public void test_subject() {
-		assertFalse(b.createSubForum(f, "food", null, moderators, (I_User) admin));
+		assertFalse(b.createSubForum(f, "food", null, moderators, (User) admin));
 	}
 	
 	@Test /*TR 33*/
 	public void test_name() {
-		assertFalse(b.createSubForum(f, null, "pizza", moderators, (I_User) admin));
+		assertFalse(b.createSubForum(f, null, "pizza", moderators, (User) admin));
 	}
 	
 	
 	@Test /*TR 34*/
 	public void test_moderators() {
-		assertFalse(b.createSubForum(f, "food", "pizza", null, (I_User) admin));
+		assertFalse(b.createSubForum(f, "food", "pizza", null, (User) admin));
 	}
 	
 	@Test /*TR 37*/
 	public void test_sub_forum_added() {
-		I_Sub_Forum subForum;
+		Sub_Forum subForum;
 		subForum = f.createSubForum("food", "pizza", moderators);
-		assertTrue(f.getSubs((I_User) admin).contains(subForum));
+		assertTrue(f.getSubs((User) admin).contains(subForum));
 	}
 
 }

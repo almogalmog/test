@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 
-public class Forum_System implements I_Forum_System {
+public class Forum_System {
 	private Vector<Forum> forums;
 	private static Super_Admin super_admin;
 	private static Vector<Member> registered_members;
@@ -23,28 +23,28 @@ public class Forum_System implements I_Forum_System {
 		this.Alogger = Logger.getLogger("Action logger");
 	}
 
-	@Override
+	
 	public Super_Admin getSuper_admin() {
 		return super_admin;
 	}
 
-	@Override
+	
 	public void setSuper_admin(Super_Admin super_admin) {
 		this.super_admin = super_admin;
 	}
 
-	@Override
+	
 	public Vector<Forum> getForums() {
 		return forums;
 	}
 
-	@Override
+	
 	public void setForums(Vector<Forum> forums) {
 		this.forums = forums;
 	}
 
-	@Override
-	public I_Forum addForum(Vector<Member> admins, I_Forum_Ruels ruels,
+	
+	public Forum addForum(Vector<Member> admins, Forum_Ruels ruels,
 			String name, String subject) {
 		Forum forum = new Forum(name, subject, admins, ruels);
 		forum.addUser(this.super_admin);
@@ -54,7 +54,7 @@ public class Forum_System implements I_Forum_System {
 		return forum;
 	}
 
-	@Override
+	
 	public Member addMember(String username, String password, String email,
 			double age) {
 		for (Member member : registered_members) {
@@ -71,12 +71,12 @@ public class Forum_System implements I_Forum_System {
 		return newMember;
 	}
 
-	@Override
+	
 	public Vector<Member> getMembers() {
 		return registered_members;
 	}
 
-	@Override
+	
 	public Member searchMemberByName(String name) {
 		for (Member member : registered_members) {
 			if (member.getName().equals(name))

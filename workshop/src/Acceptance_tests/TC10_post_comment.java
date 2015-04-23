@@ -12,24 +12,24 @@ import org.junit.Test;
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Forum_System;
-import Domain.Forum_component.I_Post;
-import Domain.Forum_component.I_Sub_Forum;
-import Domain.User_component.I_Member;
-import Domain.User_component.I_User;
+import Domain.Forum_component.Forum;
+import Domain.Forum_component.Forum_System;
+import Domain.Forum_component.Post;
+import Domain.Forum_component.Sub_Forum;
+import Domain.User_component.Member;
+import Domain.User_component.User;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 import Service.Bridge;
 import Service.Driver;
 
 public class TC10_post_comment {
-	private I_Forum_System fs;
-	private I_Forum f;
+	private Forum_System fs;
+	private Forum f;
 	private Forum_Ruels fr;
-	private I_Sub_Forum sub;
-	private I_Member m;
-	private I_Post post;
+	private Sub_Forum sub;
+	private Member m;
+	private Post post;
 	private Super_Admin sa;
 	private Bridge b = Driver.getBridge();
 
@@ -56,18 +56,18 @@ public class TC10_post_comment {
 		
 		b.registerToForum(f, "Avi", "sgysb", "avi@gmail.com", 51);
 		this.m = f.getMember("Avi");
-		post = sub.add_thread("ta ta ta", "bla bla", (I_User) m);
+		post = sub.add_thread("ta ta ta", "bla bla", (User) m);
 	}
 
 	
 	@Test /*TR 52*/
 	public void test_new_post_created() {
-		assertTrue(b.postComment("comment to ta ta ta","body", (I_User)fs.searchMemberByName("Avi"), (I_Post)post));
+		assertTrue(b.postComment("comment to ta ta ta","body", (User)fs.searchMemberByName("Avi"), (Post)post));
 	}
 	
 	@Test /*TR 53*/
 	public void test_added_to_kids_list() {
-		b.postComment("comment to ta ta ta","body", (I_User)fs.searchMemberByName("Avi"), (I_Post)post);
+		b.postComment("comment to ta ta ta","body", (User)fs.searchMemberByName("Avi"), (Post)post);
 		assertEquals(post.getKids().get(0).getHeader(), "comment to ta ta ta");
 	}
 	

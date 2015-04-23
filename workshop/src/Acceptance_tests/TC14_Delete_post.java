@@ -10,10 +10,10 @@ import org.junit.Test;
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Forum_System;
-import Domain.Forum_component.I_Post;
-import Domain.Forum_component.I_Sub_Forum;
+import Domain.Forum_component.Forum;
+import Domain.Forum_component.Forum_System;
+import Domain.Forum_component.Post;
+import Domain.Forum_component.Sub_Forum;
 import Domain.Forum_component.Post;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
@@ -21,12 +21,12 @@ import Service.Bridge;
 import Service.Driver;
 
 public class TC14_Delete_post {
-	private I_Forum f;
+	private Forum f;
 	private Forum_Ruels fr;
-	private I_Sub_Forum sub;
+	private Sub_Forum sub;
 	private Member m;
 	private Bridge b = Driver.getBridge();
-	private I_Forum_System fs;
+	private Forum_System fs;
 	private Super_Admin sa;
 	
 	@Before
@@ -84,8 +84,8 @@ public class TC14_Delete_post {
 		assertTrue(f.isMember(m));
 		assertTrue(f.getSubs(sa).contains(sub));
 
-		I_Post thread = sub.add_thread("billie jean", "great song...", m);
-		I_Post comment = thread.comment("true story", "yeah..", m);
+		Post thread = sub.add_thread("billie jean", "great song...", m);
+		Post comment = thread.comment("true story", "yeah..", m);
 
 		assertEquals(thread.getAuthor(), m);
 		assertEquals(thread.getBody(), "great song...");

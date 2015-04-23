@@ -1,18 +1,16 @@
 package Domain.User_component;
 
-import Domain.Forum_component.I_Forum;
+import Domain.Forum_component.Forum;
 
+public class Guest extends User {
+	private Forum forum;
 
-public class Guest extends User implements I_Guest{
-	private I_Forum forum; 
-	
-	public Guest(I_Forum forum, int guest_num){
-		super("guest"+guest_num+"");
+	public Guest(Forum forum, int guest_num) {
+		super("guest" + guest_num + "");
 		this.forum = forum;
 	}
 
-	@Override
-	public I_Forum getForum() {
+	public Forum getForum() {
 		return forum;
 	}
 }

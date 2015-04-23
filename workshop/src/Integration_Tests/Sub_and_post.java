@@ -7,24 +7,21 @@ import java.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
+import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Forum_Ruels;
-import Domain.Forum_component.I_Forum_System;
-import Domain.Forum_component.I_Post;
-import Domain.Forum_component.I_Sub_Forum;
 import Domain.Forum_component.Post;
+import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 
 public class Sub_and_post {
-	private I_Forum f;
-	private I_Forum_System fs;
+	private Forum f;
+	private Forum_System fs;
 	private Super_Admin sa;
-	private I_Forum_Ruels fr;
-	private I_Sub_Forum sub;
-	private I_Post p;
+	private Forum_Ruels fr;
+	private Sub_Forum sub;
+	private Post p;
 	private Member tester;
 
 	@Before
@@ -58,13 +55,13 @@ public class Sub_and_post {
 	@Test
 	public void test_add_thread_to_sub(){
 		
-		I_Post test = sub.add_thread("lol", "bla", tester);
+		Post test = sub.add_thread("lol", "bla", tester);
 		assertEquals(sub.getThreads().get(0), test);
 	}
 	
 	@Test
 	public void test_delete_thread_from_sub(){
-		I_Post test = sub.add_thread("lol", "bla", tester);
+		Post test = sub.add_thread("lol", "bla", tester);
 		assertEquals(sub.getThreads().get(0), test);
 		test.remove_post();
 		assertEquals(sub.getThreads().size(), 0);

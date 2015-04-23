@@ -9,13 +9,13 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Sub_Forum;
+import Domain.Forum_component.Forum;
+import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 
 public class TC15_delete_sub {
-	private I_Forum f;
+	private Forum f;
 	private Forum_Ruels fr;
 	private Member m;
 
@@ -39,7 +39,7 @@ public class TC15_delete_sub {
 		moderators.add(new Member("mod2", "qwerty", "mail", 30.0));
 		moderators.add(new Member("mod3", "qwerty", "mail", 30.0));
 
-		I_Sub_Forum sub = f
+		Sub_Forum sub = f
 				.createSubForum("Michael Jackson", "Music", moderators);
 		f.delete_sub(sub, m);
 		assertFalse(f.getSubs(m).contains(sub));

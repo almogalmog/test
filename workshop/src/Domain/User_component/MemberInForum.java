@@ -1,14 +1,14 @@
 package Domain.User_component;
 import java.util.Date;
 
-import Domain.Forum_component.I_Forum;
+import Domain.Forum_component.Forum;
 
 
 
-public class MemberInForum implements I_MIF {
+public class MemberInForum {
 
 	private Member member;
-	private I_Forum forum;
+	private Forum forum;
 	private int numOfPosts;
 	private Date loginTime;
 	private Date logoutTime;
@@ -23,7 +23,7 @@ public class MemberInForum implements I_MIF {
 	private final long goldOnline= 1000*86400*50; // 1000 milsec = sec, 1 day = 86,400 sec
 	private final long goldConnected=  240;
 
-	public MemberInForum(Member member, I_Forum forum){
+	public MemberInForum(Member member, Forum forum){
 		this.setMember(member);
 		this.setForum(forum);
 		this.numOfPosts=0;
@@ -33,38 +33,38 @@ public class MemberInForum implements I_MIF {
 		this.onlineTime= 0;
 	}
 
-	@Override
+	
 	public Member getMember() {
 		return member;
 	}
 
-	@Override
+	
 	public void setMember(Member member) {
 		this.member = member;
 	}
 
-	@Override
-	public I_Forum getForum() {
+	
+	public Forum getForum() {
 		return forum;
 	}
 
-	@Override
-	public void setForum(I_Forum forum) {
+	
+	public void setForum(Forum forum) {
 		this.forum = forum;
 	}
 
-	@Override
+	
 	public int getNumOfPosts() {
 		return numOfPosts;
 	}
 
-	@Override
+	
 	public void addPost() {
 		this.numOfPosts++;
 
 	}
 
-	@Override
+	
 	public void setConnected(Boolean connected) {
 		if (connected ==false){
 			this.connected = false;
@@ -77,13 +77,13 @@ public class MemberInForum implements I_MIF {
 		}
 		checkStatus();
 	}
-	@Override
+	
 	public boolean getConnected(){
 		return this.connected;
 	}
 
 
-	@Override
+	
 	public void checkStatus(){
 		Date currentDate = new Date();
 		if(numOfPosts >= silverPosts && onlineTime >= silverOnline && (currentDate.getDay() - startDate.getDay() )>= silverConnected) // 1000 milsec = sec, 1 day = 86,400 sec
@@ -92,7 +92,7 @@ public class MemberInForum implements I_MIF {
 			this.type = "Gold";
 	}
 
-	@Override
+	
 	public long getOnlineTime() {
 		return this.onlineTime;
 	}

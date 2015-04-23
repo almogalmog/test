@@ -11,24 +11,24 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Forum_Ruels;
-import Domain.Forum_component.I_Forum_System;
-import Domain.Forum_component.I_Post;
-import Domain.Forum_component.I_Sub_Forum;
+import Domain.Forum_component.Forum;
+import Domain.Forum_component.Forum_Ruels;
+import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Post;
-import Domain.User_component.I_Member;
+import Domain.Forum_component.Sub_Forum;
+import Domain.Forum_component.Post;
+import Domain.User_component.Member;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 
 public class Forums_and_user {
-	private I_Forum f;
-	private I_Forum_System fs;
+	private Forum f;
+	private Forum_System fs;
 	private Super_Admin sa;
-	private I_Forum_Ruels fr;
-	private I_Sub_Forum sub;
-	private I_Post p;
-	private I_Member tester;
+	private Forum_Ruels fr;
+	private Sub_Forum sub;
+	private Post p;
+	private Member tester;
 
 	@Before
 	public void setUp() throws Exception {
@@ -60,9 +60,9 @@ public class Forums_and_user {
 	public void test_login_member() {
 		Member m = new Member("tester", "qwerty", "mail", 20);
 		f.register(m);
-		I_Forum test = f.login(m.getName(), m.getPassword());
+		Forum test = f.login(m.getName(), m.getPassword());
 		assertEquals(test, f);
-		assertTrue(m.get_mif(f).getConnected());
+		assertTrue(m.getMembersInForum(f).getConnected());
 	}
 
 }

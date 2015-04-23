@@ -12,16 +12,16 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Post;
-import Domain.Forum_component.I_Sub_Forum;
+import Domain.Forum_component.Forum;
+import Domain.Forum_component.Post;
+import Domain.Forum_component.Sub_Forum;
 import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
 
 public class sub_forum_tests {
-	private I_Sub_Forum sub;
+	private Sub_Forum sub;
 	private Vector<Member> admins;
-	private I_Forum forum;
+	private Forum forum;
 
 	@Before
 	public void setUp() throws Exception {
@@ -71,7 +71,7 @@ public class sub_forum_tests {
 	public void test_thread() {
 		Member m = new Member("tester", "qwerty", "mail", 20);
 		this.forum.register(m);
-		I_Post thread = sub.add_thread("billie jean", "great song...", m);
+		Post thread = sub.add_thread("billie jean", "great song...", m);
 
 		assertEquals(thread.getAuthor(), m);
 		assertEquals(thread.getBody(), "great song...");
@@ -104,7 +104,7 @@ public class sub_forum_tests {
 		Member t = new Member("tester", "qwerty", "mail", 20);
 		this.forum.register(m);
 		this.forum.register(t);
-		I_Post thread = sub.add_thread("billie jean", "great song...", m);
+		Post thread = sub.add_thread("billie jean", "great song...", m);
 
 		assertTrue(this.sub.sendComplaint(m, "you suck", admins.get(0)));
 		assertFalse(this.sub.sendComplaint(t, "ta ta taa", admins.get(0)));

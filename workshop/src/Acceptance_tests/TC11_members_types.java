@@ -1,28 +1,27 @@
 package Acceptance_tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Vector;
 
-import junit.framework.Assert;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Forum_Ruels;
-import Domain.Forum_component.I_Forum_System;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 import Service.Bridge;
 import Service.Driver;
 
 public class TC11_members_types {
-	private I_Forum f;
-	private I_Forum_System fs;
+	private Forum f;
+	private Forum_System fs;
 	private Super_Admin sa;
-	private I_Forum_Ruels fr;
+	private Forum_Ruels fr;
 	private Bridge b = Driver.getBridge();
 
 	@Before
@@ -102,7 +101,7 @@ public class TC11_members_types {
 		for (int i = 0; i < 1000000000; i++)
 			;
 		f.logout(m);
-		assertTrue(m.get_mif(f).getOnlineTime() > 0);
+		assertTrue(m.getMembersInForum(f).getOnlineTime() > 0);
 	}
 
 }

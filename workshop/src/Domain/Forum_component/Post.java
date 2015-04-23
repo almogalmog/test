@@ -3,19 +3,19 @@ package Domain.Forum_component;
 import java.util.Date;
 import java.util.Vector;
 
-import Domain.User_component.I_Member;
-import Domain.User_component.I_User;
+import Domain.User_component.Member;
+import Domain.User_component.User;
 
-public class Post implements I_Post {
+public class Post {
 	private String header;
 	private String body;
-	private final I_User author;
+	private final User author;
 	private final Date time;
-	private final I_Post parent; // can be null
+	private final Post parent; // can be null
 	private Vector<Post> kids;
-	private final I_Sub_Forum sub;
+	private final Sub_Forum sub;
 
-	public Post(String header, String body, I_User author, I_Post parent,I_Sub_Forum sub) {
+	public Post(String header, String body, User author, Post parent,Sub_Forum sub) {
 		this.header = header;
 		this.body = body;
 		this.author = author;
@@ -25,61 +25,61 @@ public class Post implements I_Post {
 		this.sub = sub;
 	}
 
-	@Override
-	public I_Sub_Forum getSub() {
+	
+	public Sub_Forum getSub() {
 		return this.sub;
 	}
 
-	@Override
+	
 	public String getHeader() {
 		return header;
 	}
 
-	@Override
-	public void setHeader(I_User user,String header) {
+	
+	public void setHeader(User user,String header) {
 		if (this.author==user)
 		this.header = header;
 	}
 
-	@Override
+	
 	public String getBody() {
 		return body;
 	}
 
-	@Override
-	public void setBody(I_User user, String body) {
+	
+	public void setBody(User user, String body) {
 		if (this.author==user)
 			this.body = body;
 
 	}
 
-	@Override
-	public I_User getAuthor() {
+	
+	public User getAuthor() {
 		return author;
 	}
 
-	@Override
+	
 	public Date getTime() {
 		return time;
 	}
 
-	@Override
-	public I_Post getParent() {
+	
+	public Post getParent() {
 		return parent;
 	}
 
-	@Override
+	
 	public Vector<Post> getKids() {
 		return this.kids;
 	}
 
-	@Override
-	public I_Post addKid(Post post) {
+	
+	public Post addKid(Post post) {
 		this.kids.add(post);
 		return post;
 	}
 
-	@Override
+	
 	public void remove_post() {		
 		while(this.kids.size()!=0){
 			kids.get(0).remove_post();//remove_post();
@@ -88,7 +88,7 @@ public class Post implements I_Post {
 
 	}
 
-	@Override
+	
 	public void remove_one_post() {		
 		if (this.getParent() == null)
 			this.getSub().getThreads().remove(this);
@@ -96,15 +96,15 @@ public class Post implements I_Post {
 			this.parent.getKids().remove(this);
 	}
 
-	@Override
-	public I_Post comment(String header, String body, I_User u) {
+	
+	public Post comment(String header, String body, User u) {
 		Post p = new Post(header, body, u, this, this.sub);
 		this.addKid(p);
 		return p;
 	}
 
 
-	@Override
+	
 	public String tabs(int times){
 		StringBuilder sb= new StringBuilder();
 		while(times!=0){
@@ -114,7 +114,7 @@ public class Post implements I_Post {
 		return sb.toString();
 	}
 
-	@Override
+	
 	public String print_thread(int tabs){
 		StringBuilder sb = new StringBuilder();
 		sb.append(tabs(tabs));
@@ -127,8 +127,8 @@ public class Post implements I_Post {
 
 		return sb.toString();
 	}
-	@Override
-	public boolean isAuthor(I_Member member){
+	
+	public boolean isAuthor(Member member){
 		return (author==member);
 	}
 

@@ -10,11 +10,10 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.I_Forum;
 import Domain.User_component.Member;
 
 public class post_tests {
-	private I_Forum f;
+	private Forum f;
 
 	@Before
 	public void setUp() throws Exception {

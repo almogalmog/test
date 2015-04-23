@@ -9,18 +9,14 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.User_component.I_MIF;
 import Domain.User_component.Member;
 import Domain.User_component.MemberInForum;
-import Domain.User_component.Super_Admin;
 
 public class member_in_forum_tests extends TestCase {
 
 	private Member m;
-	private I_Forum f;
-	private I_MIF mif;
+	private Forum f;
+	private MemberInForum mif;
 	@Before
 	public void setUp() throws Exception {
 		m = new Member("liran gret shirt", "qwerty","liran@gmail.com",30);
@@ -32,7 +28,7 @@ public class member_in_forum_tests extends TestCase {
 		this.f = new Forum("name", "subject", admins, new Forum_Ruels());
 		f.register(m);
 		f.login(m.getName(), m.getPassword());
-		mif = m.get_mif(f);
+		mif = m.getMembersInForum(f);
 	}
 
 	@Test //1

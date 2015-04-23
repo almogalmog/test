@@ -10,19 +10,19 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Sub_Forum;
+import Domain.Forum_component.Forum;
 import Domain.Forum_component.Sub_Forum;
-import Domain.User_component.I_User;
+import Domain.Forum_component.Sub_Forum;
+import Domain.User_component.User;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 
 public class TC8_view {
-	private I_Forum f;
+	private Forum f;
 	private Forum_Ruels fr;
-	private I_Sub_Forum sub1;
-	private I_Sub_Forum sub2;
-	private I_User sa;
+	private Sub_Forum sub1;
+	private Sub_Forum sub2;
+	private User sa;
 
 	@Before
 	public void setUp() throws Exception {
@@ -58,7 +58,7 @@ public class TC8_view {
 		f.register(m);
 		assertTrue(f.isMember(m));
 
-		I_Forum f1 = f.login(m.getName(), m.getPassword());
+		Forum f1 = f.login(m.getName(), m.getPassword());
 		assertEquals(f1, f);
 
 		assertNotNull(f1.getSubs(sa));

@@ -9,10 +9,10 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Forum_Ruels;
-import Domain.Forum_component.I_Forum_System;
-import Domain.Forum_component.I_Sub_Forum;
+import Domain.Forum_component.Forum;
+import Domain.Forum_component.Forum_Ruels;
+import Domain.Forum_component.Forum_System;
+import Domain.Forum_component.Sub_Forum;
 import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
@@ -21,8 +21,8 @@ import Service.Driver;
 import Unit_tests.sub_forum_tests;
 
 public class TC12_complaint {
-	private I_Forum f;
-	private I_Forum_System fs;
+	private Forum f;
+	private Forum_System fs;
 	private Super_Admin sa;
 	private Bridge b = Driver.getBridge();
 	private Vector<Member> moderators = new Vector<>();

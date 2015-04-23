@@ -14,18 +14,15 @@ import org.junit.Test;
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Forum_System;
-import Domain.Forum_component.I_Sub_Forum;
 import Domain.Forum_component.Sub_Forum;
-import Domain.User_component.I_MIF;
 import Domain.User_component.Member;
+import Domain.User_component.MemberInForum;
 import Domain.User_component.Super_Admin;
 
 public class forum_tests {
-	private I_Forum_System fs;
+	private Forum_System fs;
 	private Super_Admin sa;
-	private I_Forum f;
+	private Forum f;
 	private Vector<Member> admins;
 	private Forum_Ruels fr;
 
@@ -61,7 +58,7 @@ public class forum_tests {
 		mods.add(new Member("avishay", "123","avishay@gmail.com", 23));
 		
 
-		I_Sub_Forum sf =this.f.createSubForum("Animals","Biology", mods);
+		Sub_Forum sf =this.f.createSubForum("Animals","Biology", mods);
 		
 		assertTrue(this.f.getSubs(sa).get(0) == sf);
 	}
@@ -76,7 +73,7 @@ public class forum_tests {
 		mods.add(new Member("avishay", "123","avishay@gmail.com", 23));
 		
 	
-		I_Sub_Forum sf =f.createSubForum("Animals","Biology", mods);
+		Sub_Forum sf =f.createSubForum("Animals","Biology", mods);
 	//	f.writeFirstPost("animal brutality", "dont kill animals", grey, sf);
 		assertTrue (sf.getThreads()!=null);
 		
@@ -107,8 +104,8 @@ public class forum_tests {
 		Vector<Member> mods = new Vector<>();
 		mods.add(new Member("alegriya", "123","alegriya@gmail.com", 20));
 		mods.add(new Member("avishay", "123","avishay@gmail.com", 23));
-		I_Sub_Forum sf = f.createSubForum("Animals","Biology", mods);
-		I_Sub_Forum st = new Sub_Forum("Bunnies", "Mammals", mods, f);
+		Sub_Forum sf = f.createSubForum("Animals","Biology", mods);
+		Sub_Forum st = new Sub_Forum("Bunnies", "Mammals", mods, f);
 				
 		assertTrue(f.getSubs(sa).contains(sf));
 		assertFalse (f.getSubs(sa).contains(st));
@@ -122,7 +119,7 @@ public class forum_tests {
 		f.login("grey","456");
 		assertTrue(f.getUsers().contains(fs.searchMemberByName("grey")));
 		f.logout(fs.searchMemberByName("grey"));
-		for(I_MIF mif :f.getMember("grey").getMembersInForum()){
+		for(MemberInForum mif :f.getMember("grey").getMembersInForum()){
 			if(mif.getForum()==f)
 				assertFalse(mif.getConnected());
 		}

@@ -1,29 +1,25 @@
 package Integration_Tests;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
-import java.sql.Date;
 import java.util.Vector;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum;
-import Domain.Forum_component.I_Forum_Ruels;
-import Domain.Forum_component.I_Forum_System;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 
 public class Register_to_forum {
-	private I_Forum f;
-	private I_Forum_System fs;
+	private Forum f;
+	private Forum_System fs;
 	private Super_Admin sa;
-	private I_Forum_Ruels fr;
+	private Forum_Ruels fr;
 
 	@Before
 	public void setUp() throws Exception {

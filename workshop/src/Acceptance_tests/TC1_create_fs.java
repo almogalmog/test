@@ -7,13 +7,13 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import Domain.Forum_component.I_Forum_System;
+import Domain.Forum_component.Forum_System;
 import Domain.User_component.Super_Admin;
 import Service.Bridge;
 import Service.Driver;
 
 public class TC1_create_fs {
-	private I_Forum_System fs;
+	private Forum_System fs;
 	private Bridge b = Driver.getBridge();
 
 	@Before

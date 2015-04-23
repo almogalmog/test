@@ -6,14 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.I_Forum_System;
-import Domain.User_component.I_Member;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 
 public class member_tests extends TestCase {
 
-	private I_Forum_System fs;
+	private Forum_System fs;
 	private Super_Admin sa;
 
 
@@ -36,7 +34,7 @@ public class member_tests extends TestCase {
 
 	@Test  //2
 	public void test_member_friends() {
-		I_Member liran = new Member("liran gret shirt", "qwerty","liran@gmail.com",30);
+		Member liran = new Member("liran gret shirt", "qwerty","liran@gmail.com",30);
 		Member abir = new Member("abir", "asdfg","abir@gmail.com",30);
 		Member miri = new Member("miri", "123qwe","miri@gmail.com",30);
 		Member evya = new Member("evya", "123qwe","evya@gmail.com",30);
@@ -61,7 +59,7 @@ public class member_tests extends TestCase {
 
 	@Test //4
 	public void test_member_password() {
-		I_Member liran = new Member("liran gret shirt", "qwerty","liran@gmail.com",30);
+		Member liran = new Member("liran gret shirt", "qwerty","liran@gmail.com",30);
 		assertEquals("User password is wrong!", "qwerty", liran.getPassword());
 	}
 	
