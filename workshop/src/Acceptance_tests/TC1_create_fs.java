@@ -1,14 +1,13 @@
 package Acceptance_tests;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import Domain.Forum_component.Forum_System;
-import Domain.User_component.Super_Admin;
 import Service.Bridge;
 import Service.Driver;
 

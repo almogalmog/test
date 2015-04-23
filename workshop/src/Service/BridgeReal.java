@@ -2,123 +2,193 @@ package Service;
 
 import java.util.Vector;
 
-import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Post;
 import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
-import Domain.User_component.User;
-import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 import Domain.User_component.User;
 
 public class BridgeReal implements Bridge {
 
-	@Override
-	public boolean addForum(Forum_System fs, String name, String subject,
-			Vector<Member> admins, Forum_Ruels forumrules) {
-		return (fs.addForum(admins, forumrules, name, subject) != null);
-	}
-
-	@Override
-	public boolean guestLogin(Forum forum) {
-		return (forum.loginGuest() != null);
-
-	}
-
-	@Override
-	public boolean memberLogin(Forum forum, String name, String password) {
-		return (forum.login(name, password) != null);
-
-	}
-
-	@Override
-	public void logout(Forum forum, User user) {
-		forum.logout(user);
-	}
-
-	@Override
-	public boolean createSubForum(Forum forum, String name, String subject,
-			Vector<Member> moderators, User user) {
-		return forum.createSubForum(name, subject, moderators) != null;
-
-	}
-
-	@Override
-	public boolean view(Forum forum, User user) {
-		// TODO
-		return true;
-
-	}
-
-	@Override
-	public boolean postThread(Sub_Forum sub, String header, String body,
-			User user) {
-		return sub.add_thread(header, body, user) != null;
-
-	}
-
-	@Override
-	public boolean postComment(String header, String body, User user,
-			Post parent) {
-		return parent.comment(header, body, user) != null;
-
-	}
-
-	@Override
-	public void createType(Forum forum, String type, User user) {
-		forum.add_type(type, user);
-	}
-
-	@Override
-	public void removeType(Forum forum, String type, User user) {
-		forum.remove_type(type, user);
-	}
-
-	@Override
-	public int countTypes(Forum forum, User user) {
-		if(user instanceof Super_Admin)
-			return forum.getNumOfTypes(user);
-		return 0;
-	}
-
-	@Override
-	public boolean complain(Sub_Forum sub, Member member, String complaint,
-			Member moderator) {
-		return sub.sendComplaint(member, complaint, moderator);
-	}
-
-	@Override
-	public void deletePost(Post thread,User user) {
-		if(thread.getAuthor() == user)
-			thread.remove_post();
-	}
-
-	@Override
-	public void deleteSubForum(Forum forum, User user, Sub_Forum sub) {
-		forum.delete_sub(sub, user);
-	}
+	private Forum_System fs;
 
 	@Override
 	public Forum_System createForumSystem(String name, String password,
 			String mail, int age) {
 		Super_Admin sa = new Super_Admin(name, password, mail, age);
-		Forum_System fs = new Forum_System(sa);
+		this.fs = new Forum_System(sa, "sys");
 		return (Forum_System) fs;
 	}
 
 	@Override
-	public boolean registerToForum(Forum forum, String name, String password,
-			String mail, int age) {
-		for(User m : forum.getUsers())
-			if(m instanceof Member && (m.getName().equals(name) || ((Member)m).getEmail().equals(mail)))
+	public void registerToSystem(String name, String password, String mail,
+			double age) {
+		fs.addMember(name, password, mail, age);
+	}
+
+	@Override
+	public boolean addForum(String name, String subject, Vector<String> admins,
+			Forum_Ruels forumrules) {
+		Vector<Member> ads = new Vector<Member>();
+		for (String s : admins)
+			if (fs.get_member_by_name(s) == null){
+				System.out.println("member "+name+" doesn't exist");
 				return false;
-		
+			}
+			else
+				ads.add(fs.get_member_by_name(s));
+
+		return (this.fs.addForum(ads, forumrules, name, subject) != null);
+	}
+
+	@Override
+	public boolean guestLogin(String forum) {
+		Forum f = fs.get_forum_by_name(forum);
+		if (f != null)
+			return (f.loginGuest() != null);
+		return false;
+
+	}
+
+	@Override
+	public boolean memberLogin(String forum, String name, String password) {
+		Forum f = fs.get_forum_by_name(forum);
+		if (f != null)
+			return (f.login(name, password) != null);
+		return false;
+
+	}
+
+	@Override
+	public void logout(String forum, String user) {
+		Forum f = fs.get_forum_by_name(forum);
+		if (f != null)
+			f.logout(f.getMember(user));
+	}
+
+	@Override
+	public boolean createSubForum(String forum, String name, String subject,
+			Vector<String> moderators, String user) {
+		Forum f = fs.get_forum_by_name(forum);
+
+		if (f == null)
+			return false;
+		if(moderators.size() == 0)
+			return false;
+		Vector<Member> mods = new Vector<Member>();
+		for (String string : moderators) {
+			Member toAdd = f.getMember(string);
+			if (toAdd != null)
+				mods.add(toAdd);
+			else
+				return false;
+		}
+
+		return f.createSubForum(name, subject, mods) != null;
+
+	}
+
+	@Override
+	public boolean view(String forum, String user) {
+		// TODO
+		return true;
+
+	}
+
+	// ask achiya about how to find sf
+	@Override
+	public  Post postThread(String forum, String sub, String header, String body,
+			String user) {
+		Sub_Forum sub_forum = fs.get_forum_by_name(forum).getSub(sub);
+		User u = sub_forum.getForum().getMember(user);
+		return sub_forum.add_thread(header, body, u) ;
+
+	}
+
+	@Override
+	public Post postComment(String header, String body, String user,
+			Post parent) {
+		User u = parent.getSub().getForum().getMember(user);
+		return parent.comment(header, body, u);
+
+	}
+
+	@Override
+	public void createType(String forum, String type, String user) {
+		Forum f = fs.get_forum_by_name(forum);
+		User u = f.getMember(user);
+		if (f != null)
+			f.add_type(type, u);
+	}
+
+	@Override
+	public void removeType(String forum, String type, String user) {
+		Forum f = fs.get_forum_by_name(forum);
+		User u = f.getMember(user);
+
+		if (f != null)
+			f.remove_type(type, u);
+	}
+
+	@Override
+	public int countTypes(String forum, String user) {
+		Forum f = fs.get_forum_by_name(forum);
+		User u = f.getMember(user);
+		if (f != null) {
+			if (u instanceof Super_Admin)
+				return f.getNumOfTypes(u);
+			return 0;
+		}
+		return 0;
+	}
+
+	@Override
+	public boolean complain(String sub, String member, String complaint,
+			String moderator) {
+		Sub_Forum sf = fs.getSub(sub);
+		User u = sf.getForum().getMember(member);
+		User mod = sf.getForum().getMember(moderator);
+		System.out.println(u.getName());
+		System.out.println(mod.getName());
+		if (!(u instanceof Member) || !(mod instanceof Member))
+			return false;
+		return sf.sendComplaint((Member) u, complaint, (Member) mod);
+	}
+
+	@Override
+	public void deletePost(Post thread, String user) {
+		User u = thread.getSub().getForum().getMember(user);
+		if (thread.getAuthor() == u)
+			thread.remove_post();
+	}
+
+	@Override
+	public void deleteSubForum(String forum, String user, String sub) {
+
+		Forum f = fs.get_forum_by_name(forum);
+		Sub_Forum sf = f.getSub(sub);
+		User u = f.getMember(user);
+		if (f != null)
+			f.delete_sub(sf, u);
+	}
+
+	@Override
+	public boolean registerToForum(String forum, String name, String password,
+			String mail,  double age) {
+		Forum f = fs.get_forum_by_name(forum);
+		System.out.println(f);
+		for (User m : f.getUsers())
+			if (m instanceof Member
+					&& (m.getName().equals(name) || ((Member) m).getEmail()
+							.equals(mail)))
+				return false;
+
 		Member member = new Member(name, password, mail, age);
-		if (forum.register(member) != null) {
-			forum.login(member.getName(), member.getPassword());
+		if (f.register(member) != null) {
+			f.login(member.getName(), member.getPassword());
 			return true;
 		}
 		return false;

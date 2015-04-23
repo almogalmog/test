@@ -25,7 +25,7 @@ public class member_in_forum_tests extends TestCase {
 		Member shirt = new Member("shirt", "789","shirt@gmail.com", 18);
 		admins.add(grey);
 		admins.add(shirt);
-		this.f = new Forum("name", "subject", admins, new Forum_Ruels());
+		this.f = new Forum("name", "subject", admins, new Forum_Ruels(), null);
 		f.register(m);
 		f.login(m.getName(), m.getPassword());
 		mif = m.getMembersInForum(f);

@@ -15,7 +15,7 @@ public class guest_tests {
 
 	@Before
 	public void setUp() throws Exception {
-		this.f = new Forum("forum", "subject", null, null);
+		this.f = new Forum("forum", "subject", null, null, null);
 	}
 
 	@Test //1

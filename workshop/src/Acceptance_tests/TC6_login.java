@@ -22,37 +22,38 @@ public class TC6_login {
 	private Super_Admin sa;
 	private Forum_Ruels fr;
 	private Bridge b = Driver.getBridge();
-	private Member m;
+	private Vector<String> admins_names;
+
 	@Before
 	public void setUp() throws Exception {
-		this.sa = new Super_Admin("super", "qwerty", "workshopIsFun@gmail.com",
-				20.0);
-		this.fs = new Forum_System(sa);
+		this.fs = b.createForumSystem("super", "admin", "mail", 22);
+		b.registerToSystem("liran", "qwerty", "mail1", 30.0);
+		b.registerToSystem("grey", "qwerty", "mail2", 30.0);
+		b.registerToSystem("shirt", "qwerty", "mail3", 30.0);
 
-		Vector<Member> admins = new Vector<>();
-		admins.add(new Member("liran", "qwerty", "mail", 30.0));
-		admins.add(new Member("grey", "qwerty", "mail", 30.0));
-		admins.add(new Member("shirt", "qwerty", "mail", 30.0));
-		this.fr = new Forum_Ruels();
-
-		b.addForum(fs, "name", "subject", admins, fr);
-		this.f = this.fs.getForums().get(0);
-		b.registerToForum(f, "tester", "qwerty", "mail@gmail.com", 20);
-		m = f.getMember("tester");
+		admins_names = new Vector<String>();
+		admins_names.add("liran");
+		admins_names.add("grey");
+		admins_names.add("shirt");
+		assertTrue(b.addForum("name", "subject", admins_names,
+				new Forum_Ruels()));
+		this.f = fs.getForums().get(0);
+		b.registerToForum(f.getName(),"a", "b", "c", 1);
 	}
+
 
 	@Test
 	public void test_wrong_usrname() {
-		assertFalse(b.memberLogin(f, "name", "password"));
+		assertFalse(b.memberLogin(f.getName(), "name", "password"));
 	}
 	
 	@Test
 	public void test_wrong_password() {
-		assertFalse(b.memberLogin(f, "tester", "wrong_password"));
+		assertFalse(b.memberLogin(f.getName(), "tester", "wrong_password"));
 	}
 	
 	@Test
 	public void test_connected() {
-		assertTrue(m.getMembersInForum(f).getConnected());
+		assertTrue(f.getMember("a").getMembersInForum(f).getConnected());
 	}
 }

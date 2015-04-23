@@ -12,9 +12,7 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.Forum;
 import Domain.Forum_component.Post;
-import Domain.Forum_component.Sub_Forum;
 import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
 
@@ -28,7 +26,7 @@ public class sub_forum_tests {
 		admins = new Vector<Member>();
 		admins.add(new Member("mod1", "qwerty", "mail", 30.0));
 		admins.add(new Member("mod2", "qwerty", "mail", 30.0));
-		this.forum = new Forum("a", "b", admins, new Forum_Ruels());
+		this.forum = new Forum("a", "b", admins, new Forum_Ruels(),null);
 		this.sub = new Sub_Forum("Michael Jackson", "Music", admins, forum);
 
 	}

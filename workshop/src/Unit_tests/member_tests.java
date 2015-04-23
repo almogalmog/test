@@ -18,7 +18,7 @@ public class member_tests extends TestCase {
 	@Before
 	public void setUp() throws Exception {
 		this.sa = new Super_Admin("", "", "", 50);
-		this.fs = new Forum_System(sa);
+		this.fs = new Forum_System(sa, "sys");
 
 	}
 

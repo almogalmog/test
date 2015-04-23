@@ -17,7 +17,7 @@ public class post_tests {
 
 	@Before
 	public void setUp() throws Exception {
-			this.f= new Forum("a", "b", new Vector<Member>(), new Forum_Ruels());
+			this.f= new Forum("a", "b", new Vector<Member>(), new Forum_Ruels(),null);
 	}
 
 	@Test //1

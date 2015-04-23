@@ -1,7 +1,6 @@
 package Integration_Tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
@@ -9,15 +8,11 @@ import java.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
-import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Post;
 import Domain.Forum_component.Sub_Forum;
-import Domain.Forum_component.Post;
-import Domain.User_component.Member;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 
@@ -34,7 +29,7 @@ public class Forums_and_user {
 	public void setUp() throws Exception {
 		this.sa = new Super_Admin("super", "qwerty", "workshopIsFun@gmail.com",
 				20.0);
-		this.fs = new Forum_System(sa);
+		this.fs = new Forum_System(sa, "sys");
 
 		Vector<Member> admins = new Vector<>();
 		admins.add(new Member("liran", "qwerty", "mail", 30.0));

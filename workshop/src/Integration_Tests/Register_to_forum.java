@@ -25,7 +25,7 @@ public class Register_to_forum {
 	public void setUp() throws Exception {
 		this.sa = new Super_Admin("super", "qwerty", "workshopIsFun@gmail.com",
 				20.0);
-		this.fs = new Forum_System(sa);
+		this.fs = new Forum_System(sa, "sys");
 
 		Vector<Member> admins = new Vector<>();
 		admins.add(new Member("liran", "qwerty", "mail", 30.0));

@@ -2,14 +2,9 @@ package Service;
 
 import java.util.Vector;
 
-import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Post;
-import Domain.Forum_component.Sub_Forum;
-import Domain.User_component.Member;
-import Domain.User_component.User;
-import Domain.User_component.Member;
 
 public class BridgeProxy implements Bridge {
 
@@ -21,99 +16,104 @@ public class BridgeProxy implements Bridge {
 	}
 
 	@Override
-	public boolean addForum(Forum_System fs, String name, String subject,
-			Vector<Member> admins, Forum_Ruels forumrules) {
+	public boolean addForum(String name, String subject, Vector<String> admins,
+			Forum_Ruels forumrules) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean guestLogin(Forum forum) {
+	public boolean guestLogin(String forum) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean registerToForum(Forum forum, String name, String password,
-			String mail, int age) {
+	public boolean registerToForum(String forum, String name, String password,
+			String mail, double d) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean memberLogin(Forum forum, String name, String password) {
+	public boolean memberLogin(String forum, String name, String password) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void logout(Forum forum, User user) {
+	public void logout(String forum, String user) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public boolean createSubForum(Forum forum, String name, String subject,
-			Vector<Member> moderators, User user) {
+	public boolean createSubForum(String forum, String name, String subject,
+			Vector<String> moderators, String user) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean view(Forum forum, User user) {
+	public boolean view(String forum, String user) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean postThread(Sub_Forum sub, String header, String body,
-			User user) {
+	public Post postThread(String forum, String sub, String header,
+			String body, String user) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 	@Override
-	public boolean postComment(String header, String body, User user,
+	public Post postComment(String header, String body, String user,
 			Post parent) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 	@Override
-	public void createType(Forum forum, String type, User user) {
+	public void createType(String forum, String type, String user) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void removeType(Forum forum, String type, User user) {
+	public void removeType(String forum, String type, String user) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public int countTypes(Forum forum, User user) {
+	public int countTypes(String forum, String user) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public boolean complain(Sub_Forum sub, Member member, String complaint,
-			Member moderator) {
+	public boolean complain(String sub, String member, String complaint,
+			String moderator) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void deletePost(Post thread, User m) {
+	public void deletePost(Post thread, String user) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteSubForum(Forum forum, User user, Sub_Forum sub) {
+	public void deleteSubForum(String forum, String user, String sub) {
 		// TODO Auto-generated method stub
 		
 	}
 
-}
+	@Override
+	public void registerToSystem(String name, String password, String mail,
+			double age) {
+		// TODO Auto-generated method stub
+		
+	}}

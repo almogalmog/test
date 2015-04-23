@@ -1,7 +1,7 @@
 package Acceptance_tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
@@ -9,66 +9,49 @@ import java.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
-import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.Forum;
-import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Post;
-import Domain.Forum_component.Sub_Forum;
-import Domain.User_component.Member;
-import Domain.User_component.User;
-import Domain.User_component.Member;
-import Domain.User_component.Super_Admin;
 import Service.Bridge;
 import Service.Driver;
 
 public class TC10_post_comment {
-	private Forum_System fs;
-	private Forum f;
-	private Forum_Ruels fr;
-	private Sub_Forum sub;
-	private Member m;
 	private Post post;
-	private Super_Admin sa;
 	private Bridge b = Driver.getBridge();
+
+	private Vector<String> admins_names;
+	private Vector<String> mods_names;
 
 	@Before
 	public void setUp() throws Exception {
-		 this.sa = new Super_Admin("super", "qwerty", "workshopIsFun@gmail.com",
-				20.0);
-		this.fs= new Forum_System((Super_Admin) sa);
+		b.createForumSystem("super", "admin", "mail", 22);
+		b.registerToSystem("liran", "qwerty", "mail1", 30.0);
+		b.registerToSystem("grey", "qwerty", "mail2", 30.0);
+		b.registerToSystem("shirt", "qwerty", "mail3", 30.0);
 		
-				
-		Vector<Member> admins = new Vector<>();
+		admins_names = new Vector<String>();
+		admins_names.add("liran");
+		admins_names.add("grey");
 		
-		admins.add(new Member("liran", "qwerty", "mail", 30.0));
-		admins.add(new Member("grey", "qwerty", "mail", 30.0));
-		admins.add(new Member("shirt", "qwerty", "mail", 30.0));
+		this.mods_names= new Vector<String>();
+		mods_names.add("shirt");
+		assertTrue(b.addForum("name", "subject", admins_names, new Forum_Ruels()));
+		assertTrue(b.registerToForum("name","shirt", "qwerty", "mail3", 30.0));
+		assertTrue(b.createSubForum("name", "sub", "forum", mods_names, "shirt"));
 
-		Vector<Member> moderators = new Vector<Member>();
-		moderators.add(new Member("mod1", "qwerty", "mail", 30.0));
-		moderators.add(new Member("mod2", "qwerty", "mail", 30.0));
-
-		this.fr = new Forum_Ruels();
-		this.f = new Forum("name", "subject", admins, fr);
-		sub = f.createSubForum("Michael Jackson", "Music", moderators);
-		
-		b.registerToForum(f, "Avi", "sgysb", "avi@gmail.com", 51);
-		this.m = f.getMember("Avi");
-		post = sub.add_thread("ta ta ta", "bla bla", (User) m);
+		post =  b.postThread("name", "sub", "header", "body", "a");
+		//what will be the unique identifier of post
+		assertNotNull(b.postComment("comment", "post", "a", post));
 	}
 
-	
 	@Test /*TR 52*/
 	public void test_new_post_created() {
-		assertTrue(b.postComment("comment to ta ta ta","body", (User)fs.searchMemberByName("Avi"), (Post)post));
+		assertNotNull(b.postComment("comment to ta ta ta","body", "Avi", post));
 	}
 	
 	@Test /*TR 53*/
 	public void test_added_to_kids_list() {
-		b.postComment("comment to ta ta ta","body", (User)fs.searchMemberByName("Avi"), (Post)post);
-		assertEquals(post.getKids().get(0).getHeader(), "comment to ta ta ta");
+		b.postComment("comment to ta ta ta","body", "Avi", post);
+		assertEquals(post.getKids().get(1).getHeader(), "comment to ta ta ta");
 	}
 	
 	

@@ -28,7 +28,7 @@ public class Forum_and_sub {
 	public void setUp() throws Exception {
 		this.sa = new Super_Admin("super", "qwerty", "workshopIsFun@gmail.com",
 				20.0);
-		this.fs = new Forum_System(sa);
+		this.fs = new Forum_System(sa, "sys");
 
 		
 		
@@ -56,14 +56,14 @@ public class Forum_and_sub {
 	@Test
 	public void test_add_sub_to_forum(){
 		sub = f.createSubForum("Animals", "Dogs", moderators);
-		assertEquals(f.getSubs(sa).get(0), sub);
+		assertEquals(f.getSubs(sa.getName()).get(0), sub);
 	}
 	
 	@Test
 	public void test_remove_sub_from_forum(){
 		sub = f.createSubForum("Animals", "Dogs", moderators);
-		assertEquals(f.getSubs(sa).get(0), sub);
+		assertEquals(f.getSubs(sa.getName()).get(0), sub);
 		f.delete_sub(sub, sa);
-		assertEquals(f.getSubs(sa).size(), 0);
+		assertEquals(f.getSubs(sa.getName()).size(), 0);
 	}
 }

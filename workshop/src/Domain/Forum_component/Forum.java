@@ -11,6 +11,7 @@ import Domain.User_component.Super_Admin;
 import Domain.User_component.User;
 
 public class Forum {
+	private final Forum_System fs;
 	private Vector<User> users;
 	private Vector<Member> suspended_members;
 	private Vector<Member> admins;
@@ -26,7 +27,8 @@ public class Forum {
 	private String subject;
 
 	public Forum(String name, String subject, Vector<Member> admins,
-			Forum_Ruels ruels) {
+			Forum_Ruels ruels, Forum_System fs) {
+		this.fs = fs;
 		this.name = name;
 		this.subject = subject;
 		this.users = new Vector<User>();
@@ -157,11 +159,13 @@ public class Forum {
 			return -1;
 	}
 
-	public Vector<String> getTypes(User user) {
-		if (user instanceof Super_Admin)
-			return this.friends_types;
-		else
-			return null;
+	public Vector<String> getTypes(String anme) {
+		for (Member m : admins)
+			if (m.getName().equals(anme) && m instanceof Super_Admin)
+				return this.friends_types;
+
+		System.out.println("only sa can get the users types!");
+		return null;
 	}
 
 	public Vector<Member> getSuspend_members() {
@@ -195,8 +199,11 @@ public class Forum {
 		this.suspended_admins.add(suspended_admin);
 	}
 
-	public Vector<Sub_Forum> getSubs(User user) {
-		return subs;
+	public Vector<Sub_Forum> getSubs(String string) {
+		for (Member m : admins)
+			if (m.getName().equals(string))
+				return subs;
+		return null;
 	}
 
 	public Forum_Ruels getRuels() {
@@ -243,5 +250,16 @@ public class Forum {
 
 	public String getSubject() {
 		return this.subject;
+	}
+
+	public Sub_Forum getSub(String sub) {
+		for (Sub_Forum sf : this.subs)
+			if (sf.getName().equals(sub))
+				return sf;
+		return null;
+	}
+
+	public Forum_System getFs() {
+		return fs;
 	}
 }

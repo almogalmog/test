@@ -32,8 +32,9 @@ public class forum_tests {
 		this.admins = new Vector<>();
 		this.admins.add(sa);
 		this.fr = new Forum_Ruels();
-		this.f = new Forum("name", "subject", admins, fr);
-		this.fs = new Forum_System(sa);
+		
+		this.fs = new Forum_System(sa, "sys");
+		this.f = new Forum("name", "subject", admins, fr, fs);
 		fs.addForum(admins, fr, "second", "forum");
 		Member grey = fs.addMember("grey", "456", "gery@gmail.com", 16);
 		Member shirt = fs.addMember("shirt", "789","shirt@gmail.com", 18);
@@ -60,7 +61,7 @@ public class forum_tests {
 
 		Sub_Forum sf =this.f.createSubForum("Animals","Biology", mods);
 		
-		assertTrue(this.f.getSubs(sa).get(0) == sf);
+		assertTrue(this.f.getSubs(sa.getName()).get(0) == sf);
 	}
 	
 	@Test /*3*/
@@ -107,8 +108,8 @@ public class forum_tests {
 		Sub_Forum sf = f.createSubForum("Animals","Biology", mods);
 		Sub_Forum st = new Sub_Forum("Bunnies", "Mammals", mods, f);
 				
-		assertTrue(f.getSubs(sa).contains(sf));
-		assertFalse (f.getSubs(sa).contains(st));
+		assertTrue(f.getSubs(sa.getName()).contains(sf));
+		assertFalse (f.getSubs(sa.getName()).contains(st));
 		
 		
 	}
@@ -129,10 +130,10 @@ public class forum_tests {
 	
 	public void testType(){
 		f.add_type ("Pink",sa);
-		assertTrue(f.getTypes(sa).contains("Pink"));	
+		assertTrue(f.getTypes(sa.getName()).contains("Pink"));	
 		f.add_type("Purple", fs.searchMemberByName("boy"));
-		assertFalse(f.getTypes(sa).contains("Purple"));
-		assertNull(f.getTypes(fs.searchMemberByName("boy")));
+		assertFalse(f.getTypes(sa.getName()).contains("Purple"));
+		assertNull(f.getTypes("boy"));
 		
 	}
 	

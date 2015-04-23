@@ -1,6 +1,8 @@
 package Acceptance_tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
 
@@ -9,40 +11,44 @@ import org.junit.Test;
 
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.Forum;
+import Domain.Forum_component.Forum_System;
+import Domain.Forum_component.Post;
 import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
-import Domain.User_component.Super_Admin;
+import Service.Bridge;
+import Service.Driver;
 
 public class TC15_delete_sub {
-	private Forum f;
-	private Forum_Ruels fr;
-	private Member m;
+	private Post post;
+	private Bridge b = Driver.getBridge();
+	private Forum_System fs;
+	private Vector<String> admins_names;
+	private Vector<String> mods_names;
 
 	@Before
 	public void setUp() throws Exception {
+		fs = b.createForumSystem("super", "admin", "mail", 22);
+		b.registerToSystem("liran", "qwerty", "mail1", 30.0);
+		b.registerToSystem("grey", "qwerty", "mail2", 30.0);
+		b.registerToSystem("shirt", "qwerty", "mail3", 30.0);
 
-		this.m = new Member("liran", "qwerty", "mail", 30.0);
-		Vector<Member> admins = new Vector<>();
-		admins.add(m);
-		admins.add(new Member("grey", "qwerty", "mail", 30.0));
-		admins.add(new Member("shirt", "qwerty", "mail", 30.0));
+		admins_names = new Vector<String>();
+		admins_names.add("liran");
+		admins_names.add("grey");
 
-		this.fr = new Forum_Ruels();
-		this.f = new Forum(null, null, admins, fr);
+		this.mods_names = new Vector<String>();
+		mods_names.add("shirt");
+		assertTrue(b.addForum("name", "subject", admins_names,
+				new Forum_Ruels()));
+		assertTrue(b.registerToForum("name", "shirt", "qwerty", "mail3", 30.0));
+		assertTrue(b
+				.createSubForum("name", "sub", "forum", mods_names, "shirt"));
+
+		b.deleteSubForum("name", "super", "sub");
 	}
 
 	@Test
-	public void test() {
-		Vector<Member> moderators = new Vector<>();
-		moderators.add(new Member("mod1", "qwerty", "mail", 30.0));
-		moderators.add(new Member("mod2", "qwerty", "mail", 30.0));
-		moderators.add(new Member("mod3", "qwerty", "mail", 30.0));
-
-		Sub_Forum sub = f
-				.createSubForum("Michael Jackson", "Music", moderators);
-		f.delete_sub(sub, m);
-		assertFalse(f.getSubs(m).contains(sub));
+	public void test_delete() {
+		assertTrue(fs.get_forum_by_name("name").getSub("sub") == null);
 	}
-
 }

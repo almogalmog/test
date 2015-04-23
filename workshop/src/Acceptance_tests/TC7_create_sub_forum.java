@@ -8,71 +8,69 @@ import java.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
-import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Sub_Forum;
-import Domain.User_component.Member;
-import Domain.User_component.User;
-import Domain.User_component.Member;
-import Domain.User_component.Super_Admin;
 import Service.Bridge;
 import Service.Driver;
 
 public class TC7_create_sub_forum {
 	private Forum_System fs;
-	private Super_Admin sa;
 	private Forum f;
-	private Forum_Ruels fr;
-	private Member admin;
-	private Vector<Member> moderators ;
-	private Vector<Member> admins;
 	private Bridge b = Driver.getBridge();
+	private Vector<String> admins_names;
+	private Vector<String> mods_names;
 
 	@Before
 	public void setUp() throws Exception {
-		this.sa = new Super_Admin("super", "qwerty", "workshopIsFun@gmail.com",
-				20.0);
-		this.fs = new Forum_System((Super_Admin) sa);
+		this.fs = b.createForumSystem("super", "admin", "mail", 22);
+		b.registerToSystem("liran", "qwerty", "mail1", 30.0);
+		b.registerToSystem("grey", "qwerty", "mail2", 30.0);
+		b.registerToSystem("shirt", "qwerty", "mail3", 30.0);
 
-		admins = new Vector<>();
-		admin = new Member("liran", "qwerty", "mail", 30.0);
-		admins.add((Member) admin);
-		admins.add(new Member("grey", "qwerty", "mail", 30.0));
-		admins.add(new Member("shirt", "qwerty", "mail", 30.0));
-		this.fr = new Forum_Ruels();
-
-		b.addForum(fs, "name", "subject", admins, fr);
-		this.f = this.fs.getForums().get(0);
+		admins_names = new Vector<String>();
+		admins_names.add("liran");
+		admins_names.add("grey");
+		admins_names.add("shirt");
+		assertTrue(b.addForum("name", "subject", admins_names,
+				new Forum_Ruels()));
+		this.f = fs.getForums().get(0);
+		b.registerToForum(f.getName(), "a", "b", "c", 1);
 		
-		moderators = new Vector<>();
-		moderators.add((Member) admin);
+		this.mods_names= new Vector<String>();
+		b.registerToSystem("mod1", "qwerty", "mail4", 30.0);
+		b.registerToForum(f.getName(), "mod1", "qwerty", "mail4", 30.0);
+		mods_names.add("mod1");
 		
 	}
-
+	
 	@Test /*TR 32*/
 	public void test_subject() {
-		assertFalse(b.createSubForum(f, "food", null, moderators, (User) admin));
+		assertFalse(b.createSubForum(f.getName(), "food", null, mods_names, "liran"));
 	}
 	
 	@Test /*TR 33*/
 	public void test_name() {
-		assertFalse(b.createSubForum(f, null, "pizza", moderators, (User) admin));
+		assertFalse(b.createSubForum(f.getName(), null, "pizza",mods_names, "liran"));
 	}
 	
 	
 	@Test /*TR 34*/
 	public void test_moderators() {
-		assertFalse(b.createSubForum(f, "food", "pizza", null, (User) admin));
+		assertFalse(b.createSubForum(f.getName(), "food", "pizza", new Vector<String>(), "liran"));
 	}
 	
 	@Test /*TR 37*/
 	public void test_sub_forum_added() {
-		Sub_Forum subForum;
-		subForum = f.createSubForum("food", "pizza", moderators);
-		assertTrue(f.getSubs((User) admin).contains(subForum));
+		boolean found= false;
+		b.createSubForum(f.getName(), "food", "pizza", mods_names, "liran");
+		System.out.println(f.getName());
+		for (Sub_Forum sf : f.getSubs("liran")) {
+			if(sf.getName().equals("food"))
+				found = true;
+		}
+		assertTrue(found);
 	}
 
 }

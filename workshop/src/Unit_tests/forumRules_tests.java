@@ -23,7 +23,7 @@ public class forumRules_tests {
 	@Before
 	public void setUp() throws Exception {
 		this.sa = new Super_Admin("super", "admin", "mail", 22);
-		this.fs = new Forum_System(sa);
+		this.fs = new Forum_System(sa, "sys");
 		this.fr = new Forum_Ruels();
 		fs.addForum(new Vector<Member>(), fr, "nam", "subject");
 	}

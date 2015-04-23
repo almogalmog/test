@@ -29,6 +29,7 @@ public class Sub_Forum {
 		this.forum = forum;
 		this.Alogger = Logger.getLogger("Action logger");
 		this.Elogger = Logger.getLogger("Error logger");
+	
 	}
 
 	public String getSubject() {
@@ -144,5 +145,10 @@ public class Sub_Forum {
 		}
 		return false;
 	}
+
+	public Forum getForum() {
+		return this.forum;
+	}
+	
 
 }

@@ -1,6 +1,9 @@
 package Acceptance_tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
 
@@ -10,9 +13,6 @@ import org.junit.Test;
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.Forum_component.Forum_Ruels;
-import Domain.Forum_component.Forum_System;
-import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
 import Service.Bridge;
 import Service.Driver;
@@ -22,13 +22,23 @@ public class TC3_FR_params {
 	private Forum_System fs;
 	private Super_Admin sa;
 	private Forum_Ruels fr;
+	private Vector<String> admins_names;
+	Forum f;
 
 	@Before
 	public void setUp() throws Exception {
-		this.sa = new Super_Admin("super", "admin", "mail@gmail.com", 22);
-		this.fs = new Forum_System(sa);
+		this.fs = b.createForumSystem("super", "admin", "mail", 22);
+		b.registerToSystem("liran", "qwerty", "mail1", 30.0);
+		b.registerToSystem("grey", "qwerty", "mail2", 30.0);
+		b.registerToSystem("shirt", "qwerty", "mail3", 30.0);
+		
+		admins_names = new Vector<String>();
+		admins_names.add("liran");
+		admins_names.add("grey");
+		admins_names.add("shirt");
 		this.fr = new Forum_Ruels();
-		b.addForum(fs, "name", "subject", new Vector<Member>(), fr);
+		assertTrue(b.addForum("name", "subject", admins_names, fr));
+		this.f = fs.getForums().get(0);
 	}
 
 	@Test
