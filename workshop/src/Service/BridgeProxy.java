@@ -29,8 +29,7 @@ public class BridgeProxy implements Bridge {
 	}
 
 	@Override
-	public boolean registerToForum(String forum, String name, String password,
-			String mail, double d) {
+	public boolean registerToForum(String forum, String name) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -68,8 +67,7 @@ public class BridgeProxy implements Bridge {
 	}
 
 	@Override
-	public Post postComment(String header, String body, String user,
-			Post parent) {
+	public Post postComment(String header, String body, String user, Post parent) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -112,8 +110,9 @@ public class BridgeProxy implements Bridge {
 	}
 
 	@Override
-	public void registerToSystem(String name, String password, String mail,
+	public boolean registerToSystem(String name, String password, String mail,
 			double age) {
 		// TODO Auto-generated method stub
-		
-	}}
+		return false;
+	}
+}

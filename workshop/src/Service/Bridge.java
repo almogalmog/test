@@ -20,8 +20,7 @@ public interface Bridge {
 
 	boolean guestLogin(String forum);// 4
 
-	boolean registerToForum(String forum, String name, String password,
-			String mail, double d);// 5
+	boolean registerToForum(String forum, String name);// 5
 
 	boolean memberLogin(String forum, String name, String password);// 6
 
@@ -50,6 +49,6 @@ public interface Bridge {
 
 	void deleteSubForum(String forum, String user, String sub);// 15
 
-	void registerToSystem(String name, String password, String mail,
+	boolean registerToSystem(String name, String password, String mail,
 			double age);
 }

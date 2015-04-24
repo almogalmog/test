@@ -19,17 +19,14 @@ import Service.Bridge;
 import Service.Driver;
 
 public class TC12_complaint {
-	private Super_Admin sa;
 	private Bridge b = Driver.getBridge();
-	private Sub_Forum sub;
 
 	private Vector<String> admins_names;
 	private Vector<String> mods_names;
-	private Forum_System fs;
 
 	@Before
 	public void setUp() throws Exception {
-		fs = b.createForumSystem("super", "admin", "mail", 22);
+		b.createForumSystem("super", "admin", "mail", 22);
 		b.registerToSystem("liran", "qwerty", "mail1", 30.0);
 		b.registerToSystem("grey", "qwerty", "mail2", 30.0);
 		
@@ -37,15 +34,15 @@ public class TC12_complaint {
 		mods_names = new Vector<String>();
 		admins_names.add("liran");
 		b.addForum("forum", "subject", admins_names, new Forum_Ruels());
-		b.registerToForum("forum", "grey", "qwerty", "mail2", 30.0);
+		b.registerToForum("forum", "grey");
 		b.registerToSystem("a", "a", "mail4", 16);
-		b.registerToForum("forum", "a", "a", "mail4", 16);
+		b.registerToForum("forum", "a");
 		mods_names.add("grey");
 		
 		b.createSubForum("forum", "sub", "s", mods_names, "liran");
 		
 		b.registerToSystem("tester", "a", "mail5", 100);
-		b.registerToForum("forum", "tester", "a", "mail5", 100);
+		b.registerToForum("forum", "tester");
 		
 		
 		

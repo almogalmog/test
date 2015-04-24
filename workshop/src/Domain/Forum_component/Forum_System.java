@@ -14,7 +14,6 @@ public class Forum_System {
 	private Vector<Member> registered_members;
 	private Logger Elogger;
 	private Logger Alogger;
-	
 
 	public Forum_System(Super_Admin super_admin, String name) {
 		this.name = name;
@@ -44,15 +43,15 @@ public class Forum_System {
 
 	public Forum addForum(Vector<Member> admins, Forum_Ruels ruels,
 			String name, String subject) {
-		Forum forum = new Forum( name, subject, admins, ruels, this);
-		forum.addUser(this.super_admin);
-		
-		forum.register(super_admin);
-		
+		Forum forum = new Forum(name, subject, admins, ruels, this);
+		forum.addUser(this.super_admin.getName());
+
+		forum.register(super_admin.getName());
+
 		for (Member m : admins) {
-			forum.register(m);
+			forum.register(m.getName());
 		}
-		
+
 		forum.getAdmins().add(super_admin);
 		this.forums.add(forum);
 		return forum;
@@ -99,16 +98,16 @@ public class Forum_System {
 	}
 
 	public Forum get_forum_by_name(String forum) {
-		for(Forum f : this.forums)
-			if (f.getName().equals(forum)) 
+		for (Forum f : this.forums)
+			if (f.getName().equals(forum))
 				return f;
 		return null;
 	}
 
 	public Sub_Forum getSub(String sub) {
-		for(Forum f : this.forums)
-			for(Sub_Forum sf : f.getSubs(super_admin.getName()))
-				if(sf.getName().equals(sub))
+		for (Forum f : this.forums)
+			for (Sub_Forum sf : f.getSubs(super_admin.getName()))
+				if (sf.getName().equals(sub))
 					return sf;
 		return null;
 	}

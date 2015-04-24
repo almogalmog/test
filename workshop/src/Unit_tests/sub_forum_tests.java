@@ -65,20 +65,6 @@ public class sub_forum_tests {
 	}
 
 	@Test
-	/* 6 */
-	public void test_thread() {
-		Member m = new Member("tester", "qwerty", "mail", 20);
-		this.forum.register(m);
-		Post thread = sub.add_thread("billie jean", "great song...", m);
-
-		assertEquals(thread.getAuthor(), m);
-		assertEquals(thread.getBody(), "great song...");
-		assertEquals(thread.getHeader(), "billie jean");
-
-		assertTrue(sub.getThreads().contains(thread));
-	}
-
-	@Test
 	/* 7 */
 	public void test_set_subject() {
 		sub.setSubject("People");
@@ -93,19 +79,6 @@ public class sub_forum_tests {
 		this.sub.add_Moderator(m);
 		this.sub.add_Suspended_Moderator("mod3");
 		assertTrue(this.sub.getSuspended_Moderators().contains(m));
-	}
-
-	@Test
-	/* 9 */
-	public void testComplaints() {
-		Member m = new Member("mod3", "qwerty", "mail", 30.0);
-		Member t = new Member("tester", "qwerty", "mail", 20);
-		this.forum.register(m);
-		this.forum.register(t);
-		Post thread = sub.add_thread("billie jean", "great song...", m);
-
-		assertTrue(this.sub.sendComplaint(m, "you suck", admins.get(0)));
-		assertFalse(this.sub.sendComplaint(t, "ta ta taa", admins.get(0)));
 	}
 
 }

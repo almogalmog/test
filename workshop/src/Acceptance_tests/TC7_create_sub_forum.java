@@ -36,32 +36,32 @@ public class TC7_create_sub_forum {
 		assertTrue(b.addForum("name", "subject", admins_names,
 				new Forum_Ruels()));
 		this.f = fs.getForums().get(0);
-		b.registerToForum(f.getName(), "a", "b", "c", 1);
 		
 		this.mods_names= new Vector<String>();
 		b.registerToSystem("mod1", "qwerty", "mail4", 30.0);
-		b.registerToForum(f.getName(), "mod1", "qwerty", "mail4", 30.0);
+		b.registerToForum(f.getName(), "mod1");
 		mods_names.add("mod1");
+		assertTrue(b.createSubForum("name", "sub", "subject", mods_names, "liran"));
 		
 	}
-	
-	@Test /*TR 32*/
-	public void test_subject() {
+
+	@Test //TR 32
+	public void test_subject() {	
 		assertFalse(b.createSubForum(f.getName(), "food", null, mods_names, "liran"));
 	}
 	
-	@Test /*TR 33*/
+	@Test //TR 33
 	public void test_name() {
 		assertFalse(b.createSubForum(f.getName(), null, "pizza",mods_names, "liran"));
 	}
 	
 	
-	@Test /*TR 34*/
+	@Test //TR 34
 	public void test_moderators() {
 		assertFalse(b.createSubForum(f.getName(), "food", "pizza", new Vector<String>(), "liran"));
 	}
 	
-	@Test /*TR 37*/
+	@Test //TR 37
 	public void test_sub_forum_added() {
 		boolean found= false;
 		b.createSubForum(f.getName(), "food", "pizza", mods_names, "liran");

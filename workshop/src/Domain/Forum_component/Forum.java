@@ -12,7 +12,8 @@ import Domain.User_component.User;
 
 public class Forum {
 	private final Forum_System fs;
-	private Vector<User> users;
+	private Vector<Guest> guests;
+	private Vector<String> members;
 	private Vector<Member> suspended_members;
 	private Vector<Member> admins;
 	private Vector<Member> suspended_admins;
@@ -28,10 +29,11 @@ public class Forum {
 
 	public Forum(String name, String subject, Vector<Member> admins,
 			Forum_Ruels ruels, Forum_System fs) {
+		this.guests = new Vector<Guest>();
 		this.fs = fs;
 		this.name = name;
 		this.subject = subject;
-		this.users = new Vector<User>();
+		this.members = new Vector<String>();
 		this.suspended_members = new Vector<Member>();
 		this.admins = admins;
 		this.suspended_admins = new Vector<Member>();
@@ -59,7 +61,8 @@ public class Forum {
 
 	public Vector<Sub_Forum> loginGuest() {
 		Guest guest = new Guest(this, guest_num++);
-		addUser(guest);
+		addUser(guest.getName());
+		this.guests.add(guest);
 		return subs;
 	}
 
@@ -80,66 +83,51 @@ public class Forum {
 
 	// i changed it from private to public (malachi)
 
-	public void logout(User user) {
-		if (user instanceof Member) {
-			((Member) user).get_MemberInForum(this).setConnected(false);
-
-		}
-
-		else
+	public void logout(String user) {
+		if (members.contains(user)) {
+			(fs.get_member_by_name(user)).get_MemberInForum(this).setConnected(
+					false);
+		} else
 			// i'm a guest, remove me
-			users.remove(user);
+			guests.remove(user);
 	}
 
 	// for members only
 
-	public Forum login(String namail, String password) {
-		if (namail != null && password != null) {
-			for (User user : users) {
-				if (user.getName().equals(namail)
-						&& ((Member) user).getPassword().equals(password)) {
-					for (MemberInForum MemberInForum : members_in_forum) {
-						if (MemberInForum.getMember() == ((Member) user)) {
-							MemberInForum.setConnected(true);
-							Alogger.log(Level.INFO, "You login");
-							return this;
-
-						}
+	public Forum login(String name, String password) {
+		if (name != null && password != null) {
+			if (members.contains(name)
+					&& fs.get_member_by_name(name).getPassword()
+							.equals(password))
+				for (MemberInForum MemberInForum : members_in_forum)
+					if (MemberInForum.getMember().equals(name)) {
+						MemberInForum.setConnected(true);
+						Alogger.log(Level.INFO, "You login");
+						return this;
 					}
-				}
 
-			}
 		}
 		Elogger.log(Level.WARNING, "invalid name or password");
 		return null;
 	}
 
-	private boolean isMail(String namail) {
-		/*
-		 * String email = "nbjvkj@kn.com"; Pattern p =
-		 * Pattern.compile(".+@.+\\.[a-z]+"); java.util.regex.Matcher m =
-		 * p.matcher(email); return m.matches();
-		 */
-		return namail.contains("@");
-	}
-
 	// to register as member
 
-	public Forum register(Member member) {
-		users.add(member);
-		MemberInForum MemberInForum = new MemberInForum(member, this);
-		member.add_MemberInForum(MemberInForum);
+	public Forum register(String name) {
+		members.add(name);
+		MemberInForum MemberInForum = new MemberInForum(name, this);
+		fs.get_member_by_name(name).add_MemberInForum(MemberInForum);
 		this.members_in_forum.add(MemberInForum);
 
 		return this;
 	}
 
-	public Vector<User> getUsers() {
-		return users;
+	public Vector<String> getUsers() {
+		return members;
 	}
 
-	public void addUser(User user) {
-		this.users.add(user);
+	public void addUser(String user) {
+		this.members.add(user);
 	}
 
 	public void add_type(String type, User user) {
@@ -173,12 +161,12 @@ public class Forum {
 	}
 
 	public void Suspend_member(Member suspended_member) {
-		this.users.remove(suspended_member);
+		this.members.remove(suspended_member);
 		this.suspended_members.add(suspended_member);
 	}
 
-	public void unsuspend_member(Member member) {
-		this.users.add(member);
+	public void unsuspend_member(String member) {
+		this.members.add(member);
 		this.suspended_members.remove(member);
 
 	}
@@ -225,22 +213,20 @@ public class Forum {
 
 	public boolean isMember(String name) {
 		for (MemberInForum MemberInForum : this.members_in_forum)
-			if (MemberInForum.getMember().getName().equals(name))
+			if (MemberInForum.getMember().equals(name))
 				return true;
 		return false;
 	}
 
 	public boolean isUser(String name) {
-		for (User u : this.users)
-			if (u.getName().equals(name))
-				return true;
-		return false;
+		return members.contains(name);
 	}
 
 	public Member getMember(String name) {
-		for (MemberInForum MemberInForum : this.members_in_forum)
-			if (MemberInForum.getMember().getName().equals(name))
-				return MemberInForum.getMember();
+		if (members.contains(name))
+			return fs.get_member_by_name(name);
+		System.out.println("There is no member with the name: " + name
+				+ " in this forum!");
 		return null;
 	}
 

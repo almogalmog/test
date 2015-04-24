@@ -35,7 +35,7 @@ public class TC9_post_thread {
 		this.mods_names= new Vector<String>();
 		mods_names.add("shirt");
 		assertTrue(b.addForum("name", "subject", admins_names, new Forum_Ruels()));
-		assertTrue(b.registerToForum("name","shirt", "qwerty", "mail3", 30.0));
+		assertTrue(b.registerToForum("name","shirt"));
 		assertTrue(b.createSubForum("name", "sub", "forum", mods_names, "shirt"));
 
 		assertNotNull(b.postThread("name", "sub", "header", "body", "a"));

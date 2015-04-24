@@ -39,7 +39,8 @@ public class TC6_logout {
 		assertTrue(b.addForum("name", "subject", admins_names,
 				new Forum_Ruels()));
 		this.f = fs.getForums().get(0);
-		b.registerToForum(f.getName(), "a", "b", "c", 1);
+		b.registerToSystem("a", "b", "mail4", 900);
+		b.registerToForum(f.getName(), "a");
 
 		m = f.getMember("a");
 	}

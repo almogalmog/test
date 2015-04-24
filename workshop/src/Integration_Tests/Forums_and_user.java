@@ -1,6 +1,7 @@
 package Integration_Tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
@@ -15,49 +16,46 @@ import Domain.Forum_component.Post;
 import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
+import Service.Bridge;
+import Service.Driver;
 
 public class Forums_and_user {
 	private Forum f;
 	private Forum_System fs;
-	private Super_Admin sa;
-	private Forum_Ruels fr;
-	private Sub_Forum sub;
-	private Post p;
-	private Member tester;
+	private Bridge b = Driver.getBridge();
+	private Vector<String> admins_names;
 
 	@Before
 	public void setUp() throws Exception {
-		this.sa = new Super_Admin("super", "qwerty", "workshopIsFun@gmail.com",
-				20.0);
-		this.fs = new Forum_System(sa, "sys");
+		this.fs = b.createForumSystem("super", "admin", "mail", 22);
+		b.registerToSystem("liran", "qwerty", "mail1", 30.0);
+		b.registerToSystem("grey", "qwerty", "mail2", 30.0);
+		b.registerToSystem("shirt", "qwerty", "mail3", 30.0);
 
-		Vector<Member> admins = new Vector<>();
-		admins.add(new Member("liran", "qwerty", "mail", 30.0));
-		admins.add(new Member("grey", "qwerty", "mail", 30.0));
-		admins.add(new Member("shirt", "qwerty", "mail", 30.0));
-
-		this.fr = new Forum_Ruels();
-		this.f = this.fs.addForum(admins, fr, "name", "subject");
-
-		Vector<Member> moderators = new Vector<Member>();
-		moderators.add(new Member("mod1", "qwerty", "mail", 30.0));
-		moderators.add(new Member("mod2", "qwerty", "mail", 30.0));
-
-		sub = f.createSubForum("Animals", "Dogs", moderators);
-
-		p = new Post("test", "tester", new Member("a", "b", "mail", 20), null,
-				sub);
-
-		this.tester = new Member("a", "b", "mail", 25);
+		admins_names = new Vector<String>();
+		admins_names.add("liran");
+		admins_names.add("grey");
+		admins_names.add("shirt");
+		assertTrue(b.addForum("name", "subject", admins_names,
+				new Forum_Ruels()));
+		this.f = fs.getForums().get(0);
+		b.registerToSystem("a", "b", "mail4", 900);
+		b.registerToForum(f.getName(),"a");
 	}
+
 
 	@Test
-	public void test_login_member() {
-		Member m = new Member("tester", "qwerty", "mail", 20);
-		f.register(m);
-		Forum test = f.login(m.getName(), m.getPassword());
-		assertEquals(test, f);
-		assertTrue(m.getMembersInForum(f).getConnected());
+	public void test_wrong_usrname() {
+		assertFalse(b.memberLogin(f.getName(), "name", "password"));
 	}
-
+	
+	@Test
+	public void test_wrong_password() {
+		assertFalse(b.memberLogin(f.getName(), "tester", "wrong_password"));
+	}
+	
+	@Test
+	public void test_connected() {
+		assertTrue(f.getMember("a").getMembersInForum(f).getConnected());
+	}
 }

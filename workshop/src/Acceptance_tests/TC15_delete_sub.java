@@ -1,7 +1,5 @@
 package Acceptance_tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
@@ -9,17 +7,13 @@ import java.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
-import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
 import Domain.Forum_component.Post;
-import Domain.Forum_component.Sub_Forum;
-import Domain.User_component.Member;
 import Service.Bridge;
 import Service.Driver;
 
 public class TC15_delete_sub {
-	private Post post;
 	private Bridge b = Driver.getBridge();
 	private Forum_System fs;
 	private Vector<String> admins_names;
@@ -40,7 +34,7 @@ public class TC15_delete_sub {
 		mods_names.add("shirt");
 		assertTrue(b.addForum("name", "subject", admins_names,
 				new Forum_Ruels()));
-		assertTrue(b.registerToForum("name", "shirt", "qwerty", "mail3", 30.0));
+		assertTrue(b.registerToForum("name", "shirt"));
 		assertTrue(b
 				.createSubForum("name", "sub", "forum", mods_names, "shirt"));
 

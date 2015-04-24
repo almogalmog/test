@@ -11,16 +11,12 @@ import org.junit.Test;
 import Domain.Forum_component.Forum;
 import Domain.Forum_component.Forum_Ruels;
 import Domain.Forum_component.Forum_System;
-import Domain.User_component.Member;
-import Domain.User_component.Super_Admin;
 import Service.Bridge;
 import Service.Driver;
 
 public class TC6_login {
 	private Forum f;
 	private Forum_System fs;
-	private Super_Admin sa;
-	private Forum_Ruels fr;
 	private Bridge b = Driver.getBridge();
 	private Vector<String> admins_names;
 
@@ -38,7 +34,8 @@ public class TC6_login {
 		assertTrue(b.addForum("name", "subject", admins_names,
 				new Forum_Ruels()));
 		this.f = fs.getForums().get(0);
-		b.registerToForum(f.getName(),"a", "b", "c", 1);
+		b.registerToSystem("a", "b", "mail4", 900);
+		b.registerToForum(f.getName(),"a");
 	}
 
 

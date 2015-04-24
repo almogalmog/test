@@ -35,9 +35,11 @@ public class TC10_post_comment {
 		this.mods_names= new Vector<String>();
 		mods_names.add("shirt");
 		assertTrue(b.addForum("name", "subject", admins_names, new Forum_Ruels()));
-		assertTrue(b.registerToForum("name","shirt", "qwerty", "mail3", 30.0));
+		assertTrue(b.registerToForum("name","shirt"));
 		assertTrue(b.createSubForum("name", "sub", "forum", mods_names, "shirt"));
 
+		b.registerToSystem("a", "qwerty", "mail4", 30.0);
+		b.registerToForum("name", "a");
 		post =  b.postThread("name", "sub", "header", "body", "a");
 		//what will be the unique identifier of post
 		assertNotNull(b.postComment("comment", "post", "a", post));
@@ -45,12 +47,12 @@ public class TC10_post_comment {
 
 	@Test /*TR 52*/
 	public void test_new_post_created() {
-		assertNotNull(b.postComment("comment to ta ta ta","body", "Avi", post));
+		assertNotNull(b.postComment("comment to ta ta ta","body", "a", post));
 	}
 	
 	@Test /*TR 53*/
 	public void test_added_to_kids_list() {
-		b.postComment("comment to ta ta ta","body", "Avi", post);
+		b.postComment("comment to ta ta ta","body", "a", post);
 		assertEquals(post.getKids().get(1).getHeader(), "comment to ta ta ta");
 	}
 	

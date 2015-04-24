@@ -7,7 +7,7 @@ import Domain.Forum_component.Forum;
 
 public class MemberInForum {
 
-	private Member member;
+	private String memberName;
 	private Forum forum;
 	private int numOfPosts;
 	private Date loginTime;
@@ -23,8 +23,8 @@ public class MemberInForum {
 	private final long goldOnline= 1000*86400*50; // 1000 milsec = sec, 1 day = 86,400 sec
 	private final long goldConnected=  240;
 
-	public MemberInForum(Member member, Forum forum){
-		this.setMember(member);
+	public MemberInForum(String member, Forum forum){
+		this.memberName = member;
 		this.setForum(forum);
 		this.numOfPosts=0;
 		this.startDate= new Date();
@@ -34,13 +34,13 @@ public class MemberInForum {
 	}
 
 	
-	public Member getMember() {
-		return member;
+	public String getMember() {
+		return memberName;
 	}
 
 	
-	public void setMember(Member member) {
-		this.member = member;
+	public void setMember(String member) {
+		this.memberName = member;
 	}
 
 	

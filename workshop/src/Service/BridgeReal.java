@@ -24,9 +24,15 @@ public class BridgeReal implements Bridge {
 	}
 
 	@Override
-	public void registerToSystem(String name, String password, String mail,
+	public boolean registerToSystem(String name, String password, String mail,
 			double age) {
-		fs.addMember(name, password, mail, age);
+		if (fs.get_member_by_name(name) == null){
+			fs.addMember(name, password, mail, age);
+			return true;
+		}
+		System.out.println("the name already exists in the system");
+		return false;	
+		
 	}
 
 	@Override
@@ -34,11 +40,10 @@ public class BridgeReal implements Bridge {
 			Forum_Ruels forumrules) {
 		Vector<Member> ads = new Vector<Member>();
 		for (String s : admins)
-			if (fs.get_member_by_name(s) == null){
-				System.out.println("member "+name+" doesn't exist");
+			if (fs.get_member_by_name(s) == null) {
+				System.out.println("member " + name + " doesn't exist");
 				return false;
-			}
-			else
+			} else
 				ads.add(fs.get_member_by_name(s));
 
 		return (this.fs.addForum(ads, forumrules, name, subject) != null);
@@ -66,7 +71,7 @@ public class BridgeReal implements Bridge {
 	public void logout(String forum, String user) {
 		Forum f = fs.get_forum_by_name(forum);
 		if (f != null)
-			f.logout(f.getMember(user));
+			f.logout(user);
 	}
 
 	@Override
@@ -76,7 +81,7 @@ public class BridgeReal implements Bridge {
 
 		if (f == null)
 			return false;
-		if(moderators.size() == 0)
+		if (moderators.size() == 0)
 			return false;
 		Vector<Member> mods = new Vector<Member>();
 		for (String string : moderators) {
@@ -100,17 +105,16 @@ public class BridgeReal implements Bridge {
 
 	// ask achiya about how to find sf
 	@Override
-	public  Post postThread(String forum, String sub, String header, String body,
-			String user) {
+	public Post postThread(String forum, String sub, String header,
+			String body, String user) {
 		Sub_Forum sub_forum = fs.get_forum_by_name(forum).getSub(sub);
 		User u = sub_forum.getForum().getMember(user);
-		return sub_forum.add_thread(header, body, u) ;
+		return sub_forum.add_thread(header, body, u);
 
 	}
 
 	@Override
-	public Post postComment(String header, String body, String user,
-			Post parent) {
+	public Post postComment(String header, String body, String user, Post parent) {
 		User u = parent.getSub().getForum().getMember(user);
 		return parent.comment(header, body, u);
 
@@ -176,22 +180,15 @@ public class BridgeReal implements Bridge {
 	}
 
 	@Override
-	public boolean registerToForum(String forum, String name, String password,
-			String mail,  double age) {
+	public boolean registerToForum(String forum, String name) {
 		Forum f = fs.get_forum_by_name(forum);
-		System.out.println(f);
-		for (User m : f.getUsers())
-			if (m instanceof Member
-					&& (m.getName().equals(name) || ((Member) m).getEmail()
-							.equals(mail)))
-				return false;
-
-		Member member = new Member(name, password, mail, age);
-		if (f.register(member) != null) {
-			f.login(member.getName(), member.getPassword());
-			return true;
+		if (f.getUsers().contains(name)){
+			System.out.println("the name "+name+" already exist in forum "+ f.getName());
+			return false;
 		}
-		return false;
+		f.register(name);
+		f.login(name, fs.get_member_by_name(name).getPassword());
+		return true;
 	}
 
 }

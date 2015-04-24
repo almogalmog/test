@@ -39,7 +39,7 @@ public class TC14_Delete_post {
 		this.mods_names= new Vector<String>();
 		mods_names.add("shirt");
 		assertTrue(b.addForum("name", "subject", admins_names, new Forum_Ruels()));
-		assertTrue(b.registerToForum("name","shirt", "qwerty", "mail3", 30.0));
+		assertTrue(b.registerToForum("name","shirt"));
 		assertTrue(b.createSubForum("name", "sub", "forum", mods_names, "shirt"));
 
 		
@@ -48,24 +48,24 @@ public class TC14_Delete_post {
 
 	@Test
 	public void test_same_user_can_delete() {
-		Post p = b.postThread("name", "sub", "header", "body", "a");
-		b.deletePost(p, "a");
+		Post p = b.postThread("name", "sub", "header", "body", "liran");
+		b.deletePost(p, "liran");
 		assertTrue(fs.get_forum_by_name("name").getSub("sub").getThreads().size() == 0);
 	}
 	
 	
 	@Test
 	public void test_other_user_cant_delete() {
-		Post p = b.postThread("name", "sub", "header", "body", "a");
+		Post p = b.postThread("name", "sub", "header", "body", "liran");
 		b.deletePost(p, "shirt");
 		assertFalse(fs.get_forum_by_name("name").getSub("sub").getThreads().size() == 0);
 	}
 	
 	@Test
 	public void test_delete_kids() {
-		Post post =  b.postThread("name", "sub", "header", "body", "a");
-		assertNotNull(b.postComment("comment", "post", "a", post));
-		b.deletePost(post, "a");
+		Post post =  b.postThread("name", "sub", "header", "body", "liran");
+		assertNotNull(b.postComment("comment", "post", "liran", post));
+		b.deletePost(post, "liran");
 		assertTrue(fs.get_forum_by_name("name").getSub("sub").getThreads().size() == 0);
 	}
 	

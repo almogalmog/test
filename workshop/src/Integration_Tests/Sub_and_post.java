@@ -1,6 +1,8 @@
 package Integration_Tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Vector;
 
@@ -14,58 +16,56 @@ import Domain.Forum_component.Post;
 import Domain.Forum_component.Sub_Forum;
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
+import Service.Bridge;
+import Service.Driver;
 
 public class Sub_and_post {
-	private Forum f;
 	private Forum_System fs;
-	private Super_Admin sa;
-	private Forum_Ruels fr;
-	private Sub_Forum sub;
-	private Post p;
-	private Member tester;
+	private Forum f;
+	private Bridge b = Driver.getBridge();
+	private Vector<String> admins_names;
+	private Vector<String> mods_names;
 
 	@Before
 	public void setUp() throws Exception {
-		this.sa = new Super_Admin("super", "qwerty", "workshopIsFun@gmail.com",
-				20.0);
-		this.fs = new Forum_System(sa, "sys");
+		this.fs = b.createForumSystem("super", "admin", "mail", 22);
+		b.registerToSystem("liran", "qwerty", "mail1", 30.0);
+		b.registerToSystem("grey", "qwerty", "mail2", 30.0);
+		b.registerToSystem("shirt", "qwerty", "mail3", 30.0);
+		
+		admins_names = new Vector<String>();
+		admins_names.add("liran");
+		admins_names.add("grey");
+		
+		this.mods_names= new Vector<String>();
+		mods_names.add("shirt");
+		assertTrue(b.addForum("name", "subject", admins_names, new Forum_Ruels()));
+		assertTrue(b.registerToForum("name","shirt"));
+		assertTrue(b.createSubForum("name", "sub", "forum", mods_names, "shirt"));
 
-		Vector<Member> admins = new Vector<>();
-		admins.add(new Member("liran", "qwerty", "mail", 30.0));
-		admins.add(new Member("grey", "qwerty", "mail", 30.0));
-		admins.add(new Member("shirt", "qwerty", "mail", 30.0));
+		assertNotNull(b.postThread("name", "sub", "header", "body", "a"));
+		
+	}
 
-		this.fr = new Forum_Ruels();
-		this.f = this.fs.addForum(admins, fr,"name", "subject");
-		
-		Vector<Member> moderators = new Vector<Member>();
-		moderators.add(new Member("mod1", "qwerty", "mail", 30.0));
-		moderators.add(new Member("mod2", "qwerty", "mail", 30.0));
-
-		
-		
-		sub = f.createSubForum("Animals", "Dogs", moderators);
-		
-		p=new Post("test", "tester", new Member("a", "b", "mail", 20), null, sub);
-		
-		this.tester = new Member("a", "b", "mail", 25);
-		f.register(tester);
+	@Test
+	public void test_empty_header() {
+		assertTrue(b.postThread("name", "sub", "", "body", "super") == null);
+	}
+	@Test
+	public void test_empty_body() {
+		assertTrue(b.postThread("name", "sub", "header", "", fs.get_forum_by_name("name").getMember("shirt").getName()) == null);
 	}
 	
 	@Test
-	public void test_add_thread_to_sub(){
-		
-		Post test = sub.add_thread("lol", "bla", tester);
-		assertEquals(sub.getThreads().get(0), test);
+	public void test_thread_inserted() {
+		assertTrue(fs.getSub("sub").getThreads().get(0).getHeader()== "header");
 	}
 	
 	@Test
-	public void test_delete_thread_from_sub(){
-		Post test = sub.add_thread("lol", "bla", tester);
-		assertEquals(sub.getThreads().get(0), test);
-		test.remove_post();
-		assertEquals(sub.getThreads().size(), 0);
+	public void test_num_of_messages(){
+		int num = fs.get_forum_by_name("name").getMember("shirt").getMembersInForum(fs.get_forum_by_name("name")).getNumOfPosts();
+		b.postThread("name", "sub", "a", "b", fs.get_forum_by_name("name").getMember("shirt").getName());
+		assertTrue(fs.get_forum_by_name("name").getMember("shirt").getMembersInForum(fs.get_forum_by_name("name")).getNumOfPosts() == num+1);
 	}
-	
 	
 }

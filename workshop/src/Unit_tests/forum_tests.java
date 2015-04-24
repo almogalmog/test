@@ -41,13 +41,13 @@ public class forum_tests {
 		this.admins.add(grey);
 		this.admins.add(shirt);
 		Member boy = fs.addMember("boy", "789","boy@gmail.com", 18);
-		f.addUser(boy);
+		f.addUser("boy");
 	}
 	
 	@Test /*1*/
 	public void testRegisterMember() {
 		Member grey = fs.searchMemberByName("grey");
-		this.f.register(grey);
+		this.f.register("grey");
 		assertNotNull(this.f.getMember("grey"));
 	}
 	
@@ -67,7 +67,7 @@ public class forum_tests {
 	@Test /*3*/
 	public void testWriteFirstPost(){
 		Member grey = fs.searchMemberByName("grey");
-		this.f.register(grey);
+		this.f.register("grey");
 		
 		Vector<Member> mods = new Vector<>();
 		mods.add(new Member("alegriya", "123","alegriya@gmail.com", 20));
@@ -116,10 +116,10 @@ public class forum_tests {
 	
 	@Test /*8*/
 	public void testLogout(){
-		f.register(fs.searchMemberByName("grey"));
+		f.register("grey");
 		f.login("grey","456");
-		assertTrue(f.getUsers().contains(fs.searchMemberByName("grey")));
-		f.logout(fs.searchMemberByName("grey"));
+		assertTrue(f.getUsers().contains("grey"));
+		f.logout("grey");
 		for(MemberInForum mif :f.getMember("grey").getMembersInForum()){
 			if(mif.getForum()==f)
 				assertFalse(mif.getConnected());

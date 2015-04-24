@@ -34,46 +34,39 @@ public class TC5_Register_to_forum {
 		assertTrue(b.addForum("name", "subject", admins_names,
 				new Forum_Ruels()));
 		this.f = fs.getForums().get(0);
+		b.registerToSystem("tester", "a", "mail4", 20);
 	}
 
 	@Test
-	/* TR 12 */
+	//TR 12 
 	public void test_member_name() {
-		assertTrue(b.registerToForum(f.getName(), null, "153d1fR", "abc@gmail.com", 25));
+		assertTrue(b.registerToForum(f.getName(), "tester"));
 	}
 
 	@Test
-	/* TR 13 */
+	 //TR 13 
 	public void test_password() {
-		assertTrue(b.registerToForum(f.getName(), "gal", null, "gal@gmail.com", 24));
+		assertFalse(f.login("tester", "b")!=null);
 	}
 
 	@Test
-	/* TR 14 */
+	 //TR 14 
 	public void test_second_password() {
-		/*---*/
+		//TODO
 	}
 
-	@Test
-	/* TR 15 */
-	public void test_mail() {
-		assertTrue(b.registerToForum(f.getName(), "gal", "15616GFEg", null, 24));
-	}
 
 	@Test
-	/* TR 17 */
+	 //TR 17 
 	public void test_two_members_same_name() {
-		assertTrue(b
-				.registerToForum(f.getName(), "gal", "1566GFEg", "galt@gmail.com", 24));
-		assertFalse(b.registerToForum(f.getName(), "gal", "14y6GFtc", "gd@gmail.com", 22));
+		assertFalse(b.registerToSystem("tester", "a", "mail", 20));
 	}
 
 	@Test
-	/* TR 21 */
+	 //TR 21 
 	public void test_member_added() {
-		assertTrue(b
-				.registerToForum(f.getName(), "gal", "1566GFEg", "galt@gmail.com", 24));
-		assertTrue(null != f.getMember("gal"));
+		assertTrue(b.registerToForum(f.getName(), "tester"));
+		assertTrue(null != f.getMember("tester"));
 	}
 
 }
