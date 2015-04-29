@@ -26,13 +26,13 @@ public class BridgeReal implements Bridge {
 	@Override
 	public boolean registerToSystem(String name, String password, String mail,
 			double age) {
-		if (fs.get_member_by_name(name) == null){
+		if (fs.get_member_by_name(name) == null) {
 			fs.addMember(name, password, mail, age);
 			return true;
 		}
 		System.out.println("the name already exists in the system");
-		return false;	
-		
+		return false;
+
 	}
 
 	@Override
@@ -141,12 +141,10 @@ public class BridgeReal implements Bridge {
 	public int countTypes(String forum, String user) {
 		Forum f = fs.get_forum_by_name(forum);
 		User u = f.getMember(user);
-		if (f != null) {
-			if (u instanceof Super_Admin)
-				return f.getNumOfTypes(u);
-			return 0;
-		}
+		if (u instanceof Super_Admin)
+			return f.getNumOfTypes(u);
 		return 0;
+
 	}
 
 	@Override
@@ -182,8 +180,9 @@ public class BridgeReal implements Bridge {
 	@Override
 	public boolean registerToForum(String forum, String name) {
 		Forum f = fs.get_forum_by_name(forum);
-		if (f.getUsers().contains(name)){
-			System.out.println("the name "+name+" already exist in forum "+ f.getName());
+		if (f.getUsers().contains(name)) {
+			System.out.println("the name " + name + " already exist in forum "
+					+ f.getName());
 			return false;
 		}
 		f.register(name);

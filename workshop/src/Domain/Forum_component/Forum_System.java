@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import Domain.User_component.Member;
 import Domain.User_component.Super_Admin;
-
+@Entity
 public class Forum_System {
 	private final String name;
 	private Vector<Forum> forums;
